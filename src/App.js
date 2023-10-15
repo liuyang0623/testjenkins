@@ -1,23 +1,30 @@
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 import logo from './logo.svg';
 import './App.css';
 
+const ChildComp = forwardRef((props, ref) => {
+  // const sayHello = () => {
+  //   console.log('hello')
+  // }
+  useImperativeHandle(ref, () => ({
+    sayHello() {
+      console.log('hello')
+    }
+  }))
+  return (
+    <div>子组件</div>
+  )
+})
+
 function App() {
+  const childRef = useRef(null)
+  const clickFunc = () => {
+    childRef.current.sayHello()
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ChildComp ref={childRef} />
+      <button onClick={clickFunc}>sayHello</button>
     </div>
   );
 }
